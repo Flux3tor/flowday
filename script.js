@@ -19,12 +19,12 @@ let state = {
       deadline: "2026-01-13"
     },
     {
-        id: 3,
-        title: "Science revision",
-        subject: "Science",
-        estimatedTime: 50,
-        difficulty: "easy",
-        deadline: "2026-01-11"
+      id: 3,
+      title: "Science revision",
+      subject: "Science",
+      estimatedTime: 50,
+      difficulty: "easy",
+      deadline: "2026-01-11"
     }
   ]
 };
@@ -67,13 +67,26 @@ function generatePlan(state) {
   return plan;
 }
 
-let todayPlan = generatePlan(state);
-console.log(todayPlan);
+document.addEventListener("DOMContentLoaded", () => {
+  let planDiv = document.getElementById("plan");
+  let energySelect = document.getElementById("energy");
+  let generateBtn = document.getElementById("generate");
 
-let planDiv = document.getElementById("plan");
+  function renderPlan(plan) {
+    planDiv.innerHTML = "";
+    plan.forEach(item => {
+      let p = document.createElement("p");
+      p.innerText = item.title + " - " + item.time + " min";
+      planDiv.appendChild(p);
+    });
+  }
 
-todayPlan.forEach(item => {
-  let p = document.createElement("p");
-  p.innerText = item.title + " - " + item.time + " min";
-  planDiv.appendChild(p);
+  let todayPlan = generatePlan(state);
+  renderPlan(todayPlan);
+
+  generateBtn.addEventListener("click", () => {
+    state.energy = energySelect.value;
+    let newPlan = generatePlan(state);
+    renderPlan(newPlan);
+  });
 });
